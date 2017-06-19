@@ -3,10 +3,10 @@
 class DB
 {
     // in this dB class we have all our function that have an interaction with the DB
-    private $host = "localhost";
-    private $user = "root";
-    private $pwd = "MtWBUGZKZL1Np8bk";
-    private $dbname = "cst-lager";
+    private $host = "wi-projectdb.technikum-wien.at:3306";
+    private $user = "s17-bvz2-fst-31";
+    private $pwd = "DbPass4v831";
+    private $dbname = "s17-bvz2-fst-30";
     private $dbobjekt = null;
 
     //setting a connection to the db
@@ -44,7 +44,8 @@ class DB
 
     function getOpenOrdersList() {
 
-        $this->connectToDB();
+        $conn = $this->connectToDB();
+
         $query = "select * from ekbestellung join artikel on artikel.artikelID = ekbestellung.artID join person on person.personID = ekbestellung.persID where status = 'open'";
         $ergebnis = $this->dbobjekt->query($query);
         if ($ergebnis) {
@@ -54,9 +55,9 @@ class DB
                 echo "<td>$zeile->bestellungID</td>";
                 echo "<td>$zeile->artikelBezeichnung</td>";
                 echo "<td>$zeile->vorname $zeile->nachname </td>";
-                echo "<td>$zeile->mengeBestellt</td>";
+                echo "<td>$zeile->menge</td>";
                 echo "<td>$zeile->status</td>";
-                echo "<td><input class='btn btn-default' type='submit' value='Order'></td>";
+                echo "<td><a href='index.php?id=2&$zeile->bestellungID&id=$zeile->bestellungID'><input class='btn btn-default' type='submit' value='Order' href='index.php?id=22$zeile->bestellungID'></a></td>";
 
 
                 echo "</tr>";

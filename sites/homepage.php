@@ -15,4 +15,5 @@
                 $db->getOpenOrdersList()
                 ?>
             </table>
+
 </div>
