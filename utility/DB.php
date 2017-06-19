@@ -15,10 +15,14 @@ class DB
         $this->dbobjekt = new mysqli($this->host, $this->user, $this->pwd, $this->dbname);
     }
 
-    function checkUser($user, $pw)
+    function checkkUser($user, $pw)
     {
         $this->connectToDB();
-        $query = "select * from person join personal on person.personID = personal.persID where userName = '$user' and passwort = '$pw'";
+        $query = "select * 
+                  from person 
+                    join personal on person.personID = personal.persID
+                  where userName = '$user' and passwort = '$pw'";
+
         $ergebnis = $this->dbobjekt->query($query);
         if (mysqli_num_rows($ergebnis) == 1) {
             while ($zeile = $ergebnis->fetch_object()) {
@@ -30,40 +34,162 @@ class DB
             $_SESSION['priviliges'] = $cat;
             $_SESSION['userid'] = $id;
 
+            $hello = $_SESSION['priviliges'];
+
             echo("<script language='JavaScript'>
-                   window.alert('Welcome $username!')
+                   window.alert('Welcome $username! thats your priv $hello')
                    window.location.href='index.php';
                    </script>");
         } else {
             echo("<script language='JavaScript'>
                    window.alert('Incorrect username or password!')
-                   window.location.href='sites/login.php';
+                   window.location.href='login.php';
                    </script>");
         }
     }
 
-    function getOpenOrdersList() {
+    function getOpenOrdersList()
+    {
 
         $conn = $this->connectToDB();
 
-        $query = "select * from ekbestellung join artikel on artikel.artikelID = ekbestellung.artID join person on person.personID = ekbestellung.persID where status = 'open'";
+        $query = "select * 
+                  from ekbestellung 
+                    join artikel on artikel.artikelID = ekbestellung.artID 
+                    join person on person.personID = ekbestellung.persID 
+                  where status = 'open'";
+
         $ergebnis = $this->dbobjekt->query($query);
         if ($ergebnis) {
 
-            while ($zeile = $ergebnis -> fetch_object()) {
+            while ($zeile = $ergebnis->fetch_object()) {
                 echo "<tr>";
                 echo "<td>$zeile->bestellungID</td>";
                 echo "<td>$zeile->artikelBezeichnung</td>";
                 echo "<td>$zeile->vorname $zeile->nachname </td>";
                 echo "<td>$zeile->menge</td>";
                 echo "<td>$zeile->status</td>";
-                echo "<td><a href='index.php?id=2&$zeile->bestellungID&id=$zeile->bestellungID'><input class='btn btn-default' type='submit' value='Order' href='index.php?id=22$zeile->bestellungID'></a></td>";
-
+                echo "<td>
+                        <a href='index.php?id=2&$zeile->bestellungID&id=$zeile->bestellungID'>
+                            <input class='btn btn-default' type='submit' value='Order' href='index.php?id=22$zeile->bestellungID'>
+                        </a>
+                      </td>";
 
                 echo "</tr>";
-                # code...
+
             }
         }
     }
 
+    function MinimumInventoryProductList()
+    {
+        $conn = $this->connectToDB();
+
+        $query = "SELECT * 
+                 FROM artikel
+                    JOIN inventur ON artikel.artikelID = inventur.artId";
+
+        $ergebnis = $this->dbobjekt->query($query);
+        if ($ergebnis) {
+
+            while ($zeile = $ergebnis->fetch_object()) {
+
+                $amountDifference = $zeile->mindestbestand - $zeile->stkIst;
+                if ($amountDifference > 0) {
+                    echo "<tr class='danger'>";
+                }else
+                    echo "<tr class='success'>";
+                echo "<td>$zeile->artikelID</td>";
+                echo "<td>$zeile->artikelBezeichnung</td>";
+                echo "<td>$zeile->artikelGruppe</td>";
+                echo "<td>$zeile->mindestbestand</td>";
+                echo "<td>$zeile->stkIst</td>";
+                if ($amountDifference > 0) {
+                    echo "<td>$amountDifference</td>";
+                    echo "<td>
+                        <a href='#'>
+                            <input class='btn btn-default' type='submit' value='Order'>
+                        </a>
+                      </td>";
+                } else {
+                    echo '<td></td>';
+                    echo '<td></td>';
+                }
+                echo "</tr>";
+            }
+        }
+
+    }
+
+    function getOrdersToBeApproved()
+    {
+
+        $conn = $this->connectToDB();
+
+        $query = "select * 
+                  from ekbestellung 
+                    join artikel on artikel.artikelID = ekbestellung.artID 
+                    join person on person.personID = ekbestellung.persID 
+                  where status = 'pending approval'";
+
+        $ergebnis = $this->dbobjekt->query($query);
+        if ($ergebnis) {
+
+            while ($zeile = $ergebnis->fetch_object()) {
+                echo "<tr>";
+                echo "<td>$zeile->bestellungID</td>";
+                echo "<td>$zeile->artikelBezeichnung</td>";
+                echo "<td>$zeile->vorname $zeile->nachname </td>";
+                echo "<td>$zeile->menge</td>";
+                echo "<td>$zeile->status</td>";
+                echo "<td>
+                        <a href='#'>
+                            <input class='btn btn-default' type='submit' value='approve'>
+                        </a>
+                        
+                        <a href='#'>
+                            <input class='btn btn-default' type='submit' value='refuse'>
+                        </a>
+                      </td>";
+
+                echo "</tr>";
+
+            }
+        }
+
+    }
+
+    function getOrderHistory()
+    {
+
+        $conn = $this->connectToDB();
+
+        $query = "select * 
+                  from ekbestellung 
+                    join artikel on artikel.artikelID = ekbestellung.artID 
+                    join person on person.personID = ekbestellung.persID 
+                  where status <> 'pending approval' AND status <> 'open';";
+
+        $ergebnis = $this->dbobjekt->query($query);
+        if ($ergebnis) {
+
+            while ($zeile = $ergebnis->fetch_object()) {
+                echo "<tr>";
+                echo "<td>$zeile->bestellungID</td>";
+                echo "<td>$zeile->artikelBezeichnung</td>";
+                echo "<td>$zeile->vorname $zeile->nachname </td>";
+                echo "<td>$zeile->menge</td>";
+                echo "<td>$zeile->status</td>";
+                echo "<td>
+                        <a href='#'>
+                            <input class='btn btn-default' type='submit' value='details'>
+                        </a>
+                      </td>";
+
+                echo "</tr>";
+
+            }
+        }
+
+    }
 }

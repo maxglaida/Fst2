@@ -1,5 +1,5 @@
 <div class="container-fluid">
-    <h1 id="blabla">Order Approval</h1>
+    <h1 id="blabla">Order History</h1>
     <table class="table">
         <tr>
             <th>OrderID</th>
@@ -11,7 +11,7 @@
         </tr>
         <?php
 
-        $db->getOrdersToBeApproved()
+        $db->getOrderHistory()
         ?>
     </table>
 

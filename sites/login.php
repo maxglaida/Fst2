@@ -1,4 +1,5 @@
 <?php
+session_start();
 include_once '../inc/head.php';
 include_once '../utility/DB.php';
 $db = new DB();
@@ -13,13 +14,13 @@ if (isset($_POST['login'])) {
             setcookie('username', $_POST['username']);
             setcookie('password', $_POST['password']);
         }
-        $db->checkUser($_POST['username'], ($_POST['password']));
+        $db->checkkUser($_POST['username'], ($_POST['password']));
     }
 }
 ?>
 
     <div class="container">
-        <form class="form-signin" action="index.php?id=3" method="post">
+        <form class="form-signin" action="login.php" method="post">
             <h2 class="form-signin-heading">User login</h2>
             <input type="text" id="usern" name="username" class="form-control" placeholder="Username" required >
             <input type="password" id="pass" name="password" class="form-control" placeholder="Password" required>

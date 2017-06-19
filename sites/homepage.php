@@ -1,7 +1,7 @@
 
 <div class="container-fluid">
 <h1 id="blabla">Open Orders</h1>
-            <table class="table table-striped">
+            <table class="table">
                 <tr>
                     <th>OrderID</th>
                     <th>Product</th>

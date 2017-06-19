@@ -2,6 +2,10 @@ body{
     padding-top: 50px;
 }
 
+#navbar {
+    background-color: greenyellow;
+}
+
 #footer {
     margin-top:50px;
 }
