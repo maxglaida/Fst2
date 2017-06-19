@@ -38,5 +38,6 @@ class navigation{
             $nav->loadXML($who);
             //  generating the shopping cart icon with the amount of items that currently exist in the session.
             ?>
-
+        </ul>
+    </div>
 </nav>

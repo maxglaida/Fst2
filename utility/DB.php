@@ -42,4 +42,27 @@ class DB
         }
     }
 
+    function getOpenOrdersList() {
+
+        $this->connectToDB();
+        $query = "select * from ekbestellung join artikel on artikel.artikelID = ekbestellung.artID join person on person.personID = ekbestellung.persID where status = 'open'";
+        $ergebnis = $this->dbobjekt->query($query);
+        if ($ergebnis) {
+
+            while ($zeile = $ergebnis -> fetch_object()) {
+                echo "<tr>";
+                echo "<td>$zeile->bestellungID</td>";
+                echo "<td>$zeile->artikelBezeichnung</td>";
+                echo "<td>$zeile->vorname $zeile->nachname </td>";
+                echo "<td>$zeile->mengeBestellt</td>";
+                echo "<td>$zeile->status</td>";
+                echo "<td><input class='btn btn-default' type='submit' value='Order'></td>";
+
+
+                echo "</tr>";
+                # code...
+            }
+        }
+    }
+
 }
