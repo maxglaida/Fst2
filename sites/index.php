@@ -21,7 +21,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 
     } elseif ($_GET['id'] == 5) {
     }
-} else include_once 'homepage.php';
+}
 
 // including our footer
 include_once '../inc/footer.php' ?>

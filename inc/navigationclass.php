@@ -37,9 +37,7 @@ class navigation{
 
 
             // creating a new navigation object and loading the xml.
-            $who = 'employee';
-            $nav = new Navigation();
-            $nav->loadXML($who);
+
             //  generating the shopping cart icon with the amount of items that currently exist in the session.
             ?>
         </ul>

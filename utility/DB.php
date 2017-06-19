@@ -18,7 +18,7 @@ class DB
     function checkUser($user, $pw)
     {
         $this->connectToDB();
-        $query = "select * from person join personal on person.personID = personal.persID where userName = '$user' and passwort = $pw and rolleID = 1";
+        $query = "select * from person join personal on person.personID = personal.persID where userName = '$user' and passwort = '$pw'";
         $ergebnis = $this->dbobjekt->query($query);
         if (mysqli_num_rows($ergebnis) == 1) {
             while ($zeile = $ergebnis->fetch_object()) {
@@ -37,7 +37,7 @@ class DB
         } else {
             echo("<script language='JavaScript'>
                    window.alert('Incorrect username or password!')
-                   window.location.href='login.php';
+                   window.location.href='sites/login.php';
                    </script>");
         }
     }

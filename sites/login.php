@@ -13,7 +13,7 @@ if (isset($_POST['login'])) {
             setcookie('username', $_POST['username']);
             setcookie('password', $_POST['password']);
         }
-        $db->checkUser($_POST['username'], md5($_POST['password']));
+        $db->checkUser($_POST['username'], ($_POST['password']));
     }
 }
 ?>
