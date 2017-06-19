@@ -26,7 +26,11 @@ class navigation{
 
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
-        <a href="sites/homepage.php" class="navbar-brand">CTS</a>
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">
+                <img id="img" alt="Brand" src="../ress/img/Logo.PNG">
+            </a>
+        </div>
         <ul class="nav navbar-nav">
 
             <?php
