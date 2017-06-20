@@ -14,14 +14,16 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     if ($_GET['id'] == 1) {
         include_once 'homepage.php';
     } elseif ($_GET['id'] == 2) {
-
+        include_once 'OrderHistory.php';
     } elseif ($_GET['id'] == 3) {
-
+        include_once 'insureMinimumInventory.php';
     } elseif ($_GET['id'] == 4) {
-
-    } elseif ($_GET['id'] == 5) {
+        include_once 'approveOrders.php';
+    } elseif ($_GET['id'] == 10) {
+        include_once 'logout.php';
     }
-} else include_once 'homepage.php';
+}else include_once 'homepage.php';
+
 
 // including our footer
 include_once '../inc/footer.php' ?>

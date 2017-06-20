@@ -1,9 +1,25 @@
-body{
+body {
     padding-top: 50px;
+    background-color: aliceblue;
+}
+
+.table {
+    background-color: ghostwhite;
+    border-bottom-color: black;
+}
+
+.form-signin {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}
+
+#navbar {
+    background-color: greenyellow;
 }
 
 #footer {
-    margin-top:50px;
+    margin-top: 50px;
 }
 
 #img {
