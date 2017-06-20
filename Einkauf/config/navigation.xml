@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<navigation>
+    <staff>
+        <menu>
+            <title>Open orders</title>
+            <link>index.php?id=1</link>
+        </menu>
+        <menu>
+            <title>Order history</title>
+            <link>index.php?id=2</link>
+        </menu>
+        <menu>
+            <title>Ensuring minimum inventory</title>
+            <link>index.php?id=3</link>
+        </menu>
+    </staff>
+    <admin>
+        <menu>
+            <title>Open orders</title>
+            <link>index.php?id=1</link>
+        </menu>
+        <menu>
+            <title>Order history</title>
+            <link>index.php?id=2</link>
+        </menu>
+        <menu>
+            <title>Ensuring minimum inventory</title>
+            <link>index.php?id=3</link>
+        </menu>
+        <menu>
+            <title>Approve orders</title>
+            <link>index.php?id=4</link>
+        </menu>
+    </admin>
+</navigation>
