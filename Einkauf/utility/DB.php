@@ -66,22 +66,17 @@ class DB {
         function getSupplierList($artikelid) {
 
             $conn = $this->connectToDB();
-
-            $query = "select * from xxxxx "
-                    . "where artikelid = '$artikelid'";
+            $allSuppliers = array();
+            $query = "select * from liefartprice "
+                    . "where artikel = '$artikelid'";
             $ergebnis = $this->dbobjekt->query($query);
 
             while ($zeile = $ergebnis->fetch_object()) {
-                echo "<tr>";
-                echo "<td>$zeile->bestellungID</td>";
-                echo "<td>$zeile->artikelBezeichnung</td>";
-                echo "<td>$zeile->vorname $zeile->nachname </td>";
-                echo "<td>$zeile->menge</td>";
-                echo "<td>$zeile->status</td>";
-                echo "<td><a href='index.php?id=4&orderid=$zeile->bestellungID'&artikelid=$zeile->artikelid><input class='btn btn-primary' type='submit' value='Order'</a></td>";
-                echo "</tr>";
-                # code...
+                $supplier = new SupplierPrice($zeile->lieferant, $zeile->price, $zeile->minimumAmount);
+                array_push($allSuppliers, $supplier);
             }
+            
+            return $allSuppliers;
         }
 
     }
