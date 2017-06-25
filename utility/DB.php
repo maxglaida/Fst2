@@ -28,7 +28,7 @@ class DB
             while ($zeile = $ergebnis->fetch_object()) {
                 $username = $zeile->userName;
                 $cat = $zeile->rolleID;
-                $id = $zeile->personID;
+                $id = $zeile->personalID;
             }
             $_SESSION['username'] = $username;
             $_SESSION['priviliges'] = $cat;
@@ -48,6 +48,24 @@ class DB
         }
     }
 
+    function getInventorys() {
+
+        $this->connectToDB();
+
+        $query = "SELECT * FROM inventurschein ORDER BY -inventurScheinID";
+
+        $ergebnis = $this->dbobjekt->query($query);
+        if ($ergebnis) {
+            # code...
+            while ($zeile = $ergebnis->fetch_object()) {
+
+                echo "<option value='$zeile->inventurScheinID'>$zeile->inventurScheinID - $zeile->datErstellt</option>";
+                # code...
+            }
+        }else
+            echo "Es gibt ein fehlar bei zugriff!";
+    }
+
     function getOpenOrdersList()
     {
 
@@ -55,9 +73,13 @@ class DB
 
         $query = "select * 
                   from ekbestellung 
-                    join artikel on artikel.artikelID = ekbestellung.artID 
-                    join person on person.personID = ekbestellung.persID 
-                  where status = 'open'";
+                    join (select personid, vorname, nachname, personalid 
+	                      from person 
+	                        join personal on personal.persID = person.personID
+	                      ) Q1
+                    on Q1.personalid = ekbestellung.persID
+                    join artikel on ekbestellung.artID = artikel.artikelID
+                    where status = 'open'";
 
         $ergebnis = $this->dbobjekt->query($query);
         if ($ergebnis) {
@@ -81,45 +103,44 @@ class DB
         }
     }
 
-    function MinimumInventoryProductList()
-    {
-        $conn = $this->connectToDB();
 
-        $query = "SELECT * 
-                 FROM artikel
-                    JOIN inventur ON artikel.artikelID = inventur.artId";
+    function insertNewOrder($pID, $amount, $invID)
+    {
+        var_dump($_SESSION['userid']);
+        $person = $_SESSION['userid'];
+
+        $this->connectToDB();
+
+        $query = "INSERT INTO ekbestellung (`artID`, `persID`, `menge`, `status`) 
+                  VALUES ('$pID', '$person', '$amount', 'open');";
 
         $ergebnis = $this->dbobjekt->query($query);
-        if ($ergebnis) {
 
-            while ($zeile = $ergebnis->fetch_object()) {
+        $query = "UPDATE inventur SET ekstatus='order created' WHERE inventurID='$invID'";
+        $ergebnis = $this->dbobjekt->query($query);
 
-                $amountDifference = $zeile->mindestbestand - $zeile->stkIst;
-                if ($amountDifference > 0) {
-                    echo "<tr class='danger'>";
-                }else
-                    echo "<tr class='success'>";
-                echo "<td>$zeile->artikelID</td>";
-                echo "<td>$zeile->artikelBezeichnung</td>";
-                echo "<td>$zeile->artikelGruppe</td>";
-                echo "<td>$zeile->mindestbestand</td>";
-                echo "<td>$zeile->stkIst</td>";
-                if ($amountDifference > 0) {
-                    echo "<td>$amountDifference</td>";
-                    echo "<td>
-                        <a href='#'>
-                            <input class='btn btn-default' type='submit' value='Order'>
-                        </a>
-                      </td>";
-                } else {
-                    echo '<td></td>';
-                    echo '<td></td>';
-                }
-                echo "</tr>";
-            }
-        }
+
 
     }
+
+    function inventoryProductList($invID)
+    {
+        $this->connectToDB();
+        $productsArrayWithAmount = array();
+
+        $query = "select * from inventur join artikel on artikel.artikelID = inventur.artId
+                  where invID = $invID;";
+        $ergebnis = $this->dbobjekt->query($query);
+
+        while ($zeile = $ergebnis->fetch_object()) {
+
+
+            //jedes User-Objekt wird in das Array $userArray abgelegt
+            array_push($productsArrayWithAmount, $zeile);
+        }
+        return $productsArrayWithAmount;
+    }
+
 
     function getOrdersToBeApproved()
     {
