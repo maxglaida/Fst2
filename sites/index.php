@@ -16,7 +16,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     } elseif ($_GET['id'] == 2) {
         include_once 'OrderHistory.php';
     } elseif ($_GET['id'] == 3) {
-        include_once 'insureMinimumInventory.php';
+        include_once 'ensureMinimumInventory.php';
     } elseif ($_GET['id'] == 4) {
         include_once 'approveOrders.php';
     } elseif ($_GET['id'] == 10) {
